@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import cors from "cors";
 import { randomBytes } from "crypto";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
@@ -8,6 +9,7 @@ const port = process.env.PORT;
 
 const app: Express = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 type User = {
   id: string;
