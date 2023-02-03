@@ -1,13 +1,38 @@
+import bodyParser from "body-parser";
+import { randomBytes } from "crypto";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 
 dotenv.config();
-
-const app: Express = express();
 const port = process.env.PORT;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Please change this!");
+const app: Express = express();
+app.use(bodyParser.json());
+
+type User = {
+  id: string;
+  email: string;
+  password: string;
+};
+
+const users: User[] = [];
+
+app.get("/users", (req: Request, res: Response) => {
+  res.send(users);
+});
+
+app.post("/users", (req: Request, res: Response) => {
+  const id = randomBytes(16).toString("hex");
+  const { email, password } = req.body;
+
+  const newUser = {
+    id,
+    email,
+    password,
+  };
+
+  users.push(newUser);
+  res.send(newUser);
 });
 
 app.listen(port, () => {
